@@ -1,6 +1,7 @@
 package com.demo.test;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +58,10 @@ public class MainActivity extends Activity {
 //                    ImageView view = new ImageView(MainActivity.this);
 //                    Glide.with(MainActivity.this).load(urls.get(holder.getBindingAdapterPosition())).into(view);
 //                    new AlertDialog.Builder(MainActivity.this).setView(view).create().show();
-                    ImageDialog imageDialog = new ImageDialog(MainActivity.this);
+                    ImageDialog imageDialog = new ImageDialog(MainActivity.this, urls.get(holder.getBindingAdapterPosition()));
                     imageDialog.show();
+//                    bigImageLoader(urls.get(holder.getBindingAdapterPosition()));
+
                 }
             });
         }
@@ -78,5 +81,23 @@ public class MainActivity extends Activity {
             pic = itemView.imageView;
 
         }
+    }
+
+    private void bigImageLoader(String url) {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        ImageView image = new ImageView(MainActivity.this);
+        Glide.with(MainActivity.this).load(url).into(image);
+        dialog.setContentView(image);
+        //将dialog周围的白块设置为透明
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        //显示
+        dialog.show();
+        //点击图片取消
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 }
